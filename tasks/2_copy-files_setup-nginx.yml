@@ -1,0 +1,39 @@
+---
+  - name: Create folders
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: directory
+    loop:
+      - "{{ FRESHRSS_PATH }}"
+      - "{{ FRESHRSS_PATH }}/volumes"
+      - "{{ FRESHRSS_PATH }}/volumes/config"
+      - "{{ FRESHRSS_PATH }}/backups"
+      - "{{ FRESHRSS_PATH }}/backups/database"
+      - "{{ FRESHRSS_PATH }}/backups/volume"
+      - "{{ FRESHRSS_PATH }}/backups/logs"
+      - "{{ FRESHRSS_PATH }}/scripts"
+      - "{{ FRESHRSS_PATH }}/docs"
+
+
+  - name: Copy docker compose file
+    ansible.builtin.template:
+      src: "{{ role_path }}/templates/freshrss_docker-compose.yml.j2"
+      dest: "{{ FRESHRSS_PATH }}/docs/docker-compose.yml"
+
+  - name: Install nginx
+    ansible.builtin.package:
+      name: nginx
+      state: 'latest'
+
+  - name: Install sqlite3
+    ansible.builtin.package:
+      name: sqlite3
+
+  - name: Copy dump database scripts
+    ansible.builtin.template:
+      src: "{{ role_path }}/templates/backup_freshrss.sh.j2"
+      dest: "{{ FRESHRSS_PATH }}/scripts/backup_freshrss.sh"
+
+
+# TODO If selinux, flip selinux booleans
+

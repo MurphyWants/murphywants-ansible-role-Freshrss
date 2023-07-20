@@ -1,0 +1,26 @@
+---
+  #- name: gather_facts
+  #  gather_facts:
+
+  - name: Assert statements to ensure everything is set correcting
+    assert: 
+      that:
+        - FRESHRSS_STORAGE_LVM_ZFS|lower == "zfs" or FRESHRSS_STORAGE_LVM_ZFS|lower == "lvm"
+        - FRESHRSS_BACKEND|lower == "docker" or FRESHRSS_BACKEND|lower == "podman"
+  # TODO      - VAULT_FRESHRSS_BACKUPS_BORG_ENCRYPTION_KEY is defined
+
+  - name: Check if docker-compose file exists
+    ansible.builtin.stat:
+      path: "{{ FRESHRSS_PATH }}/docs/docker-compose.yml"
+    register: freshrss_stat_docker_compose_file
+
+  - name: Docker Compose Stop Running Apps
+    community.docker.docker_compose:
+      project_src: "{{ FRESHRSS_PATH }}/docs"
+      files: "docker-compose.yml"
+      state: absent
+    when: freshrss_stat_docker_compose_file.stat.exists
+
+  
+  ### Prestage
+  # TODO  - stop running cronjobs

@@ -1,4 +1,39 @@
 ---
-  - name: gather_facts
-    gather_facts:
+  #- name: gather_facts
+  #  gather_facts:
 
+  - name: Prestage Tasks
+    ansible.builtin.import_tasks:
+      file: 0_prestage.yml
+
+  - name: Partitioning - ZFS
+    ansible.builtin.import_tasks:
+      file: 1_0_partitioning_zfs.yml
+  #  when: TODO fix
+  #    - "zfs in FRESHRSS_STORAGE_LVM_ZFS|lower"
+      
+  #- name: Partitioning - LVM
+  #  ansible.builtin.import_tasks:
+  #    file: 1_1_partitioning_lvm.yml 
+  #  when:
+  #    - "lvm in FRESHRSS_STORAGE_LVM_ZFS|lower"    
+      
+  - name: Mkdirs and Copy Files
+    ansible.builtin.import_tasks:
+      file: 2_copy-files_setup-nginx.yml    
+      
+  - name: Configure Docker
+    ansible.builtin.import_tasks:
+      file: 3_0_configure-docker.yml    
+  #  when:
+  #    - "docker in FRESHRSS_BACKEND|lower "
+      
+  - name: Configure Podman
+    ansible.builtin.import_tasks:
+      file: 3_1_configure-podman.yml    
+  #  when:
+  #    - "podman in FRESHRSS_BACKEND|lower "
+      
+  - name: Configure Nginx
+    ansible.builtin.import_tasks:
+      file: 4_configure-nginx.yml

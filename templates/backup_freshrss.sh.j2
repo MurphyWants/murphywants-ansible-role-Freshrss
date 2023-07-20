@@ -1,0 +1,124 @@
+# Setup Variables
+dateTime="$(date +'%Y%m%d-%H%M%S')"
+#echo "DATETIME ${dateTime}"
+logFile="{{ FRESHRSS_PATH }}/backups/logs/${dateTime}.log"
+
+
+log() {
+    if [[ -z "$1" ]];
+    then # If there are no arguments, assume data was piped in
+        # For data piped in 
+        while IFS= read line; do
+            echo "${line}" >> "$logFile"
+        done
+    else # Arguments were passed and need to be logged
+        # For arguments to log
+        for msg in "$@"
+        do
+            echo "$msg" >> "$logFile"
+        done
+    fi
+
+
+}
+
+create_database_backups() {
+    log "==========================="
+    log "Starting Database Dumps"
+    database_backup_dir="{{ FRESHRSS_PATH }}/backups/database/${dateTime}/"
+    log "Backing up to ${database_backup_dir}"
+    mkdir -p "$database_backup_dir" 2>&1 | log
+
+
+    for i in $(find {{ FRESHRSS_PATH }}/volumes/config/ -iname '*.sqlite');
+    do
+        log "Working Db: ${i}"
+        dir_parent_name=$(echo $(dirname $i) | rev | cut -d '/' -f1 | rev)
+        #echo "DIR PARENT NAME: ${dir_parent_name}"
+        backup_file_name="'${database_backup_dir}/${dir_parent_name}.sqlite'"
+        log "Backup File Name: ${backup_file_name}"
+        sqlite3 "${i}" "vacuum into ${backup_file_name}" 2>&1 | log
+    done
+}
+
+create_tarball_backups() {
+    log "==========================="
+    log "Starting Tarball Creation"
+    tarball_backup_file="{{ FRESHRSS_PATH }}/backups/volume/freshrss.${dateTime}.tar.gz"
+    log "Tarball Output: ${tarball_backup_file}"
+
+    # We're gonna backup the whole gosh darn thing, minus the backups
+    tar --exclude="{{ FRESHRSS_PATH }}/backups/*" --exclude="backups/*" --exclude="../backups/*"  --directory="{{ FRESHRSS_PATH }}" -czf  "${tarball_backup_file}" "{{ FRESHRSS_PATH }}" 2>&1 | log
+}
+
+cleanup_backups() {
+    num_backups="$1"
+    log "==========================="
+    log "Starting cleanup backups"
+    log "Max number of backups: ${num_backups}"
+}
+
+print_help() {
+    echo "==========================="
+    echo "USAGE"
+    echo "==========================="
+    echo "Purpose: To backup the freshrss docker container from linuxserver.io" 
+    echo "This script will create database dumps as backups"
+    echo "This script will tar up the dir in a tarball"
+    echo "If given a max number of backups (--num-backups|-n), this will only keep the max number of backups."
+    echo "Usage: $ dump_databases.sh <optional args>"
+    echo "==========================="
+    echo "If run without arguments: This will create a new database dump"
+    echo "      and create a tarball of the running application."
+    echo "==========================="
+    echo "Arguments: "
+    echo "--help|-h : print this help"
+    echo "--num-backups|-n <num> : Sets the maximum number of backups to keep."
+    echo "      This script will delete all backups older than <num>"
+    echo "==========================="
+
+    exit 1
+}
+
+# Main
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --num-backups*|-n*)
+        shift
+        if [[ -z "$1" ]]
+        then
+            echo "Missing arg <number>"
+            print_help
+        elif [[ ! $1 =~ ^-?[0-9]+$ ]]
+        then
+            echo "Argument must be a number: "
+            echo "-n|--num-backups <number>"
+            print_help
+        else
+            number_of_backups="$1"
+        fi
+        ;;
+    --help*|-h*)
+        print_help
+        ;;
+     *)
+        echo "Invalid arg"
+        print_help
+        ;;
+    esac
+    shift
+done
+
+echo "Starting Backup Script: ${dateTime}" >> $logFile
+create_database_backups
+create_tarball_backups
+
+if [[ ! -z "$number_of_backups" ]]
+then
+    #cleanup_backups "$number_of_backups"
+    #echo "Num Backups: ${number_of_backups}"
+    log "==========================="
+    log "Reminder: implement cleaning up backups"
+    log "==========================="
+fi

@@ -1,0 +1,10 @@
+---
+  - name: Create freshrss ZFS volume
+    community.general.zfs:
+      name: "{{ FRESHRSS_STORAGE_ZFS_POOL }}/{{FRESHRSS_STORAGE_ZFS_FS}}"
+      state: present
+      extra_zfs_properties:
+        mountpoint: "{{ FRESHRSS_PATH }}"
+
+#   - TODO quota
+

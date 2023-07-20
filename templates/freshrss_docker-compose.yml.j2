@@ -1,0 +1,15 @@
+version: '3.3'
+services:
+    freshrss:
+        container_name: freshrss
+        environment:
+            - TZ=en_us
+            - PUID={{ FRESHRSS_PUID }}
+            - PGID={{ FRESHRSS_PGID }}
+        ports:
+            - '{{ FRESHRSS_HTTP_PORT }}:80/tcp'
+            - '{{ FRESHRSS_HTTPS_PORT }}:443/tcp'
+        volumes:
+            - '{{ FRESHRSS_PATH }}/volumes/config:/config:Z'
+        image: 'lscr.io/linuxserver/freshrss:{{ FRESHRSS_CONTAINER_VERSION }}'
+        restart: unless-stopped
