@@ -9,7 +9,7 @@
       - "{{ FRESHRSS_PATH }}/volumes/config"
       - "{{ FRESHRSS_PATH }}/backups"
       - "{{ FRESHRSS_PATH }}/backups/database"
-      - "{{ FRESHRSS_PATH }}/backups/volume"
+      - "{{ FRESHRSS_PATH }}/backups/tarballs"
       - "{{ FRESHRSS_PATH }}/backups/logs"
       - "{{ FRESHRSS_PATH }}/scripts"
       - "{{ FRESHRSS_PATH }}/docs"
@@ -34,6 +34,14 @@
       src: "{{ role_path }}/templates/backup_freshrss.sh.j2"
       dest: "{{ FRESHRSS_PATH }}/scripts/backup_freshrss.sh"
 
-
+  - name: Create cronjob to run database dump script daily at 10pm
+    ansible.builtin.cron:
+      backup: true
+      hour: 22
+      minute: 0
+      job: "bash {{ FRESHRSS_PATH }}/scripts/backup_freshrss.sh -n 30"
+      name: "Freshrss - Dump Databases"
+      state: "present"
+      
 # TODO If selinux, flip selinux booleans
 

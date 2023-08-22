@@ -1,7 +1,7 @@
 # Setup Variables
 dateTime="$(date +'%Y%m%d-%H%M%S')"
 #echo "DATETIME ${dateTime}"
-logFile="{{ FRESHRSS_PATH }}/backups/logs/${dateTime}.log"
+logFile="{{ FRESHRSS_PATH }}/backups/logs/freshrss-dump-database-${dateTime}.log"
 
 
 log() {
@@ -44,7 +44,7 @@ create_database_backups() {
 create_tarball_backups() {
     log "==========================="
     log "Starting Tarball Creation"
-    tarball_backup_file="{{ FRESHRSS_PATH }}/backups/volume/freshrss.${dateTime}.tar.gz"
+    tarball_backup_file="{{ FRESHRSS_PATH }}/backups/tarballs/freshrss.${dateTime}.tar.gz"
     log "Tarball Output: ${tarball_backup_file}"
 
     # We're gonna backup the whole gosh darn thing, minus the backups
@@ -52,10 +52,34 @@ create_tarball_backups() {
 }
 
 cleanup_backups() {
-    num_backups="$1"
+    max_backups="$1"
     log "==========================="
     log "Starting cleanup backups"
-    log "Max number of backups: ${num_backups}"
+    log "Max number of backups: ${max_backups}"
+
+    log "Starting tarball cleanups"
+    num_backups_tarballs=$(ls -l "{{ FRESHRSS_PATH }}/backups/tarballs/" | grep -v 'total' | wc -l)
+    log "Number of current tarballs: ${num_backups_tarballs}"
+    while [ $num_backups_tarballs -gt $max_backups ]
+    do
+        oldest_tarball=$(find "{{ FRESHRSS_PATH }}/backups/tarballs/" -type f  | sort | head -n 1)
+        log "Removing oldest tarball: ${oldest_tarball}"
+        rm "${oldest_tarball}"
+        num_backups_tarballs=$(ls -l "{{ FRESHRSS_PATH }}/backups/tarballs/" | grep -v 'total' | wc -l)
+    done
+    log "End tarball cleanup"
+
+    log "Start database cleanups"
+    num_database_backups=$(ls -l "{{ FRESHRSS_PATH }}/backups/database/" | grep -v 'total' | wc -l)
+    log "Nunber of current database backups: ${num_database_backups}"
+    while [ $num_database_backups -gt $max_backups ]
+    do
+        oldest_database=$(find {{ FRESHRSS_PATH }}/backups/database/* -type d | sort | head -n 1)
+        log "Removing oldest database backup: ${oldest_database}"
+        rm -rf "${oldest_database}"
+        num_database_backups=$(ls -l "{{ FRESHRSS_PATH }}/backups/database/" | grep -v 'total' | wc -l)
+    done
+    log "End database cleanups"
 }
 
 print_help() {
@@ -66,6 +90,7 @@ print_help() {
     echo "This script will create database dumps as backups"
     echo "This script will tar up the dir in a tarball"
     echo "If given a max number of backups (--num-backups|-n), this will only keep the max number of backups."
+    echo ""
     echo "Usage: $ dump_databases.sh <optional args>"
     echo "==========================="
     echo "If run without arguments: This will create a new database dump"
@@ -116,9 +141,9 @@ create_tarball_backups
 
 if [[ ! -z "$number_of_backups" ]]
 then
-    #cleanup_backups "$number_of_backups"
     #echo "Num Backups: ${number_of_backups}"
-    log "==========================="
-    log "Reminder: implement cleaning up backups"
-    log "==========================="
+    cleanup_backups "$number_of_backups"
+    #log "==========================="
+    #log "Reminder: implement cleaning up backups"
+    #log "==========================="
 fi
