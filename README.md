@@ -45,6 +45,8 @@ FRESHRSS_FQDN | 'freshrss.domain.com' | Change this to your fully qualified doma
 FRESHRSS_BACKUPS_BORG_CONFIGURE | "True" | Placeholder, todo deploy borg backups of this application stack
 FRESHRSS_BACKUPS_FS_SNAPSHOTS_CONFIGURE | "True" | Placeholder, todo zfs snapshots and/or lvm snapshots
 FRESHRSS_TIMEZONE | "America/New_York" | Timezone of the container
+FRESHRSS_SSL_CERT_PATH | <unset> | Requried for nginx config
+FRESHRSS_SSL_KEY_PATH | <unset> | Requried for nginx config
 
 ## Example Playbook
 

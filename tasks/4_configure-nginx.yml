@@ -15,4 +15,4 @@
 
 ### Install nginx and configure - TODO
 # - Generate Certs - if certs don't exist or expired
-# - Restart nginx
+# - Start, enable and Restart nginx
