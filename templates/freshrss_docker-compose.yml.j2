@@ -3,7 +3,7 @@ services:
     freshrss:
         container_name: freshrss
         environment:
-            - TZ=en_us
+            - TZ='{{ FRESHRSS_TIMEZONE }}'
             - PUID={{ FRESHRSS_PUID }}
             - PGID={{ FRESHRSS_PGID }}
         ports:
