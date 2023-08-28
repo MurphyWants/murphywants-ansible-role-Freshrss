@@ -13,3 +13,7 @@ services:
             - '{{ FRESHRSS_PATH }}/volumes/config:/config:Z'
         image: 'lscr.io/linuxserver/freshrss:{{ FRESHRSS_CONTAINER_VERSION }}'
         restart: unless-stopped
+networks:
+    default:
+      external:
+        name: bridge
