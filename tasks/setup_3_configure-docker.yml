@@ -1,12 +1,4 @@
 ---
-  - name: Install Docker
-    ansible.builtin.package:
-      name:
-        - docker
-        - docker.io
-        - docker-compose
-      state: present 
-
   - name: Start freshrss
     community.docker.docker_compose:
       project_src: "{{ FRESHRSS_PATH }}/docs"

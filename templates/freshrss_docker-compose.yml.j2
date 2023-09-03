@@ -7,13 +7,10 @@ services:
             - PUID={{ FRESHRSS_PUID }}
             - PGID={{ FRESHRSS_PGID }}
         ports:
-            - '{{ FRESHRSS_HTTP_PORT }}:80/tcp'
-            - '{{ FRESHRSS_HTTPS_PORT }}:443/tcp'
+            - '127.0.0.1:{{ FRESHRSS_HTTP_PORT }}:80/tcp'
+            - '127.0.0.1:{{ FRESHRSS_HTTPS_PORT }}:443/tcp'
         volumes:
             - '{{ FRESHRSS_PATH }}/volumes/config:/config:Z'
         image: 'lscr.io/linuxserver/freshrss:{{ FRESHRSS_CONTAINER_VERSION }}'
         restart: unless-stopped
-networks:
-    default:
-      external:
-        name: bridge
+        network_mode: bridge

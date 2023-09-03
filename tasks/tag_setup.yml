@@ -1,0 +1,20 @@
+---
+  - name: Prestage Tasks
+    ansible.builtin.import_tasks:
+      file: setup_0_prestage.yml
+
+  - name: Partitioning - ZFS
+    ansible.builtin.import_tasks:
+      file: setup_1_partitioning_zfs.yml
+      
+  - name: Mkdirs and Copy Files
+    ansible.builtin.import_tasks:
+      file: setup_2_copy-files_setup-nginx.yml    
+      
+  - name: Configure Docker
+    ansible.builtin.import_tasks:
+      file: setup_3_configure-docker.yml    
+ 
+  - name: Configure Nginx
+    ansible.builtin.import_tasks:
+      file: setup_4_configure-nginx.yml

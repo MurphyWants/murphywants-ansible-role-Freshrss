@@ -1,0 +1,6 @@
+---
+- name: Run database dump script
+  ansible.builtin.command: "{{ FRESHRSS_PATH }}/scripts/backup_freshrss.sh"
+  check_mode: false
+  diff: false
+

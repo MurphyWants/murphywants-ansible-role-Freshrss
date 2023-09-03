@@ -1,39 +1,56 @@
----
-  #- name: gather_facts
-  #  gather_facts:
+---  
+  - name: gather_facts
+    gather_facts:
 
-  - name: Prestage Tasks
+  - name: Tag - Setup
     ansible.builtin.import_tasks:
-      file: 0_prestage.yml
+      file: tag_setup.yml
+    tags:
+      - setup
+      - baseline
+      - never
+  
+  - name: Tag - Start
+    ansible.builtin.import_tasks:
+      file: tag_start.yml
+    tags:
+      - start
+      - run
+      - never
 
-  - name: Partitioning - ZFS
+  - name: Tag - Stop
     ansible.builtin.import_tasks:
-      file: 1_0_partitioning_zfs.yml
-  #  when: TODO fix
-  #    - "zfs in FRESHRSS_STORAGE_LVM_ZFS|lower"
-      
-  #- name: Partitioning - LVM
-  #  ansible.builtin.import_tasks:
-  #    file: 1_1_partitioning_lvm.yml 
-  #  when:
-  #    - "lvm in FRESHRSS_STORAGE_LVM_ZFS|lower"    
-      
-  - name: Mkdirs and Copy Files
+      file: tag_stop.yml
+    tags:
+      - stop
+      - kill
+      - never
+
+  - name: Tag - Backup
     ansible.builtin.import_tasks:
-      file: 2_copy-files_setup-nginx.yml    
-      
-  - name: Configure Docker
+      file: tag_backup.yml
+    tags:
+      - backup
+      - never
+
+  - name: Tag - Update
     ansible.builtin.import_tasks:
-      file: 3_0_configure-docker.yml    
-  #  when:
-  #    - "docker in FRESHRSS_BACKEND|lower "
-      
-  - name: Configure Podman
+      file: tag_update.yml
+    tags:
+      - update
+      - upgrade
+      - never
+
+  - name: Tag - Remove
     ansible.builtin.import_tasks:
-      file: 3_1_configure-podman.yml    
-  #  when:
-  #    - "podman in FRESHRSS_BACKEND|lower "
-      
-  - name: Configure Nginx
+      file: tag_remove.yml
+    tags:
+      - remove
+      - never
+
+  - name: Tag - Purge
     ansible.builtin.import_tasks:
-      file: 4_configure-nginx.yml
+      file: tag_purge.yml
+    tags:
+      - purge
+      - never

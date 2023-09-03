@@ -1,5 +1,0 @@
----
-  - name: gather_facts
-    gather_facts:
-
-# TODO reference already created LVM section
