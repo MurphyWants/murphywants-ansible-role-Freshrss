@@ -27,6 +27,19 @@ Uses the following modules:
 Uses the following roles:
 - [murphywants-ansible-role-component-docker](https://github.com/MurphyWants/murphywants-ansible-role-component-docker): To install and configure the docker baseline
 
+## Tags
+Ansible role template with the following actions & tags:
+
+Tag | Description
+--- | ---
+Setup/Baseline | Setup the application and apply the configuration baseline
+Start | Start required services
+Stop | Stop required services
+Backup | Run the backup for the component or application or OS
+Update | Update the component applications
+Remove | Remove configurations and applications
+Purge | Remove all configurations and applications relating to the app/component
+
 ## Variables
 Variable | Default Value | Description
 ---|---|---
@@ -73,19 +86,3 @@ FRESHRSS_URL="freshrss.domain.example.com"
 - Setup borg backups
 - TOOD breakout nginx & certs into their own component role
 - Setup FS snapshots and offloading
-
-
-```
-#FRESHRSS_STORAGE_LVM_ZFS: 'ZFS' # or 'LVM' deleting
-##FRESHRSS_STORAGE_ZFS_QUOTA: '0' # deleting
-#
-#
-#FRESHRSS_BACKEND: 'DOCKER' # or 'PODMAN' # deleting
-#
-#
-# TODO
-#FRESHRSS_BACKUPS_BORG_CONFIGURE: 'True'
-#FRESHRSS_BACKUPS_FS_SNAPSHOTS_CONFIGURE: 'True'
-## Vault variables
-### VAULT_FRESHRSS_BACKUPS_BORG_ENCRYPTION_KEY
-```
