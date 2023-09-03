@@ -48,10 +48,10 @@ FRESHRSS_GUID | 10001 | https://docs.linuxserver.io/general/understanding-puid-a
 FRESHRSS_HTTP_PORT | 8080 | Host port for port 80 port mapping
 FRESHRSS_HTTPS_PORT | 8081 | Host port for port 443 port mapping
 FRESHRSS_PATH | "/mnt/freshrss/" | The location of the container persistent data. A parition will be created and mounted here if the folder doens't exist. 
-FRESHRSS_STORAGE_ZFS_POOL | "apps_pool" | The Linux hosts ZFS pool name, where the partiiton will be created from
+FRESHRSS_STORAGE_ZFS_POOL | "apps_pool" | The Linux host's ZFS pool name, where the partiiton will be created from
 FRESHRSS_STORAGE_ZFS_FS | "freshrss" | The name of the filesystem that ZFS is creating
 FRESHRSS_PODMAN_SERVICE_ACCOUNT | "srv_freshrss" | Placeholder service account, todo later
-FRESHRSS_CONTAINER_VERSION | "latest" | Can be used to specify a specific version of the docker container to pull and use
+FRESHRSS_CONTAINER_VERSION | "latest" | Can be used to specify a specific version of the container to pull and use
 FRESHRSS_FQDN | 'freshrss.domain.com' | Change this to your fully qualified domain name
 FRESHRSS_TIMEZONE | "America/New_York" | Timezone of the container
 FRESHRSS_SSL_CERT_PATH | <unset> | Requried for nginx config
