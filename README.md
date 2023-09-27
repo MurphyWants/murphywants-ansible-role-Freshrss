@@ -1,4 +1,4 @@
-# murphywants-ansible-role-Freshrss
+# murphywants-ansible-role-application-freshrss
 
 Purpose: Setup the freshrss docker container using rootless podman on its own partition
 
@@ -83,6 +83,15 @@ FRESHRSS_URL="freshrss.domain.example.com"
 ```
 
 # TODO List
-- Setup borg backups
-- TOOD breakout nginx & certs into their own component role
-- Setup FS snapshots and offloading
+- TODO breakout nginx & certs into their own component role
+- TODO breakout borg backup into its own role
+- TODO breakout ZFS snapshots w/ syncoid into its own role
+- Cleanup backup scripts
+  - Implement borg backup via borgmatic
+  - The tarball backup should backup:
+    - volumes
+    - database dumps
+    - other scripts etc
+  - The tarball should not backup:
+    - the tarball dump directory
+  - Implement ZFS snapshot schedule w/ syncoid
