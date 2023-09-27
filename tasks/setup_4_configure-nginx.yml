@@ -13,6 +13,11 @@
       src: "{{ role_path }}/templates/freshrss_nginx.conf.j2"
       dest: /etc/nginx/conf.d/freshrss_nginx.conf
 
+  - name: Restart nginx
+    ansible.builtin.systemd_service:
+      name: nginx
+      state: restarted
+
 ### Install nginx and configure - TODO
 # - Generate Certs - if certs don't exist or expired
 # - Start, enable and Restart nginx

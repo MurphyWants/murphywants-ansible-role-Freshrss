@@ -14,3 +14,5 @@ services:
         image: 'lscr.io/linuxserver/freshrss:{{ FRESHRSS_CONTAINER_VERSION }}'
         restart: unless-stopped
         network_mode: bridge
+        environment:
+            - COMPOSE_PROJECT_NAME=freshrss

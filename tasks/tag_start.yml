@@ -4,7 +4,7 @@
       path: "{{ FRESHRSS_PATH }}/docs/docker-compose.yml"
     register: freshrss_stat_docker_compose_file
 
-  - name: Docker Compose Stop Running Apps
+  - name: Docker Compose Start Apps
     community.docker.docker_compose:
       project_src: "{{ FRESHRSS_PATH }}/docs"
       files: "docker-compose.yml"
