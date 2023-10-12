@@ -10,12 +10,13 @@
       files: "docker-compose.yml"
       state: present
       pull: true
+      project_name: freshrss
     when: freshrss_stat_docker_compose_file.stat.exists
 
   - name: Create cronjob to run database dump script daily at 10pm
     ansible.builtin.cron:
       backup: true
-      hour: 22
+      hour: 20
       minute: 0
       job: "bash {{ FRESHRSS_PATH }}/scripts/backup_freshrss.sh -n 30"
       name: "Freshrss - Dump Databases"
