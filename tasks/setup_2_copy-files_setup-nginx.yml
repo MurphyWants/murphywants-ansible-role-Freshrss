@@ -33,6 +33,7 @@
     ansible.builtin.template:
       src: "{{ role_path }}/templates/backup_freshrss.sh.j2"
       dest: "{{ FRESHRSS_PATH }}/scripts/backup_freshrss.sh"
+      mode: "0700"
 
   - name: Create cronjob to run database dump script daily at 10pm
     ansible.builtin.cron:
