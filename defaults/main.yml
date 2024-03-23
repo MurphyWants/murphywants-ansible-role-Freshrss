@@ -9,7 +9,7 @@ FRESHRSS_STORAGE_ZFS_FS: 'freshrss'
 FRESHRSS_TIMEZONE: "America/New_York"
 FRESHRSS_PODMAN_SERVICE_ACCOUNT: 'srv_freshrss'
 FRESHRSS_CONTAINER_VERSION: 'latest'
-FRESHRSS_FQDN: 'freshrss.domain.com'
+FRESHRSS_FQDN: 'freshrss.local'
 # undefined variables
 # FRESHRSS_SSL_CERT_PATH: path to cert
 # FRESHRSS_SSL_KEY_PATH: path to key
