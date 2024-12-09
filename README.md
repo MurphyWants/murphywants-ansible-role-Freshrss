@@ -22,7 +22,7 @@ Uses the following modules:
 - community.general
   - community.general.zfs
   - community.general.ufw
-- community.docker.docker_compose
+- community.docker.docker_compose_v2
 
 Uses the following roles:
 - [murphywants-ansible-role-component-docker](https://github.com/MurphyWants/murphywants-ansible-role-component-docker): To install and configure the docker baseline

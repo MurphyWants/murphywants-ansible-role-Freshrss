@@ -5,7 +5,7 @@
     register: freshrss_stat_docker_compose_file
 
   - name: Docker Compose Stop Running Apps
-    community.docker.docker_compose:
+    community.docker.docker_compose_v2:
       project_src: "{{ FRESHRSS_PATH }}/docs"
       files: "docker-compose.yml"
       state: absent

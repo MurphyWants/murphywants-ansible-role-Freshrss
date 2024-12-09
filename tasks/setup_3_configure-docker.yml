@@ -1,6 +1,6 @@
 ---
   - name: Start freshrss
-    community.docker.docker_compose:
+    community.docker.docker_compose_v2:
       project_src: "{{ FRESHRSS_PATH }}/docs"
       files: "docker-compose.yml"
       pull: true
